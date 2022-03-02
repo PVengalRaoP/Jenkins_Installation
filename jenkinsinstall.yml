@@ -1,6 +1,6 @@
 ---
 - name :  Jenkins Installation
-  hosts : localhost
+  hosts : all
   tasks :
 
     - name : installation of Wget
