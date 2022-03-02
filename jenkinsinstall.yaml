@@ -1,0 +1,76 @@
+---
+- name :  Jenkins Installation
+  hosts : localhost
+  tasks :
+
+    - name : installation of Wget
+      yum :
+        name : wget
+        state: present
+
+    - name : download jenkins repo
+      get_url :
+        url : https://pkg.jenkins.io/redhat/jenkins.repo
+        dest : /etc/yum.repos.d/jenkins.repo
+
+    - name : importing gpg  keys
+      rpm_key:
+        key: https://pkg.jenkins.io/redhat/jenkins.io.key
+
+    - name : EPEL
+      yum :
+        name: epel-release
+        state : latest
+
+
+    - name : install  openjdk
+      yum :
+        name: java-11-openjdk-devel
+        state : present
+
+    - name : install jenkins
+      yum:
+        name: jenkins
+        state : present
+
+    - name: systemctl daemon reload command
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable and Start the Jenkins Service
+      service:
+        name: jenkins
+        enabled: yes
+        state: started
+
+    - name: Open Firewall Port
+      firewalld:
+        zone: public
+        port: 8080/tcp
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: sleep for 30 sec
+      wait_for: timeout=30
+      delegate_to: 127.0.0.1
+
+    - name: init password jenkin
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      changed_when: false
+      register: result
+
+    - name: print init password jenkins
+      debug:
+        var: result.stdout
+
+    - name: Downloading and unarching the jmeter
+      ansible.builtin.unarchive:
+        src: https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.4.3.tgz
+        dest: /etc/
+        remote_src: yes
+
+    - name: Inserting "jmeter.save.saveservice.output_format=xml" in user.properties
+      lineinfile:
+        path: /etc/apache-jmeter-5.4.3/bin/user.properties
+        line: jmeter.save.saveservice.output_format=xml
