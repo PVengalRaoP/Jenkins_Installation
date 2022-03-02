@@ -1,7 +1,6 @@
 - name :  Jenkins Installation
   hosts : all
   tasks :
-
     - name : installation of Wget
       yum :
         name : wget
@@ -62,14 +61,3 @@
     - name: print init password jenkins
       debug:
         var: result.stdout
-
-    - name: Downloading and unarching the jmeter
-      ansible.builtin.unarchive:
-        src: https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.4.3.tgz
-        dest: /etc/
-        remote_src: yes
-
-    - name: Inserting "jmeter.save.saveservice.output_format=xml" in user.properties
-      lineinfile:
-        path: /etc/apache-jmeter-5.4.3/bin/user.properties
-        line: jmeter.save.saveservice.output_format=xml
