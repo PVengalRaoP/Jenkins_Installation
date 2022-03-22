@@ -1,35 +1,35 @@
-- name :  Jenkins Installation
-  hosts : all
-  tasks :
-    - name : installation of Wget
-      yum :
-        name : wget
+- name:  Jenkins Installation
+  hosts: all
+  tasks:
+    - name: installation of Wget
+      yum:
+        name: wget
         state: present
 
-    - name : download jenkins repo
-      get_url :
-        url : https://pkg.jenkins.io/redhat/jenkins.repo
-        dest : /etc/yum.repos.d/jenkins.repo
+    - name: download jenkins repo
+      get_url:
+        url: https://pkg.jenkins.io/redhat/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
 
-    - name : importing gpg  keys
+    - name: importing gpg  keys
       rpm_key:
         key: https://pkg.jenkins.io/redhat/jenkins.io.key
 
     - name : EPEL
       yum :
         name: epel-release
-        state : latest
+        state: latest
 
 
-    - name : install  openjdk
-      yum :
+    - name: install  openjdk
+      yum:
         name: java-11-openjdk-devel
-        state : present
+        state: present
 
-    - name : install jenkins
+    - name: install jenkins
       yum:
         name: jenkins
-        state : present
+        state: present
 
     - name: systemctl daemon reload command
       systemd:
