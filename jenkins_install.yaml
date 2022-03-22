@@ -15,8 +15,8 @@
       rpm_key:
         key: https://pkg.jenkins.io/redhat/jenkins.io.key
 
-    - name : EPEL
-      yum :
+    - name: EPEL
+      yum:
         name: epel-release
         state: latest
 
