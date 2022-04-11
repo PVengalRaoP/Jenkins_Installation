@@ -1,5 +1,5 @@
 - name:  Jenkins Installation
-  hosts: all
+  hosts: 100.64.188.205
   tasks:
     - name: installation of Wget
       yum:
